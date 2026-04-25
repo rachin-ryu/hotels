@@ -395,12 +395,19 @@
       flex-shrink: 0;
     }
 
+    /* ห่อทั้ง filter box และแผนที่ด้วย sticky container เดียว */
+    .sidebar-sticky {
+      position: sticky;
+      top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
     .sidebar-inner {
       background: #fff;
       border-radius: 12px;
       padding: 20px;
-      position: sticky;
-      top: 80px;
     }
 
     .filter-title {
@@ -469,25 +476,26 @@
       letter-spacing: 1px;
     }
 
-    /* ปุ่ม View on Map */
-    .map-btn {
+    /* ===== รูปแผนที่ใน Sidebar ===== */
+    .map-preview {
       width: 100%;
-      background: #e8f0fb;
-      border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #1a6ed8;
+      border-radius: 12px;
+      overflow: hidden;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.2s;
+      display: block;
     }
 
-    .map-btn:hover { background: #d0e4f9; }
+    .map-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .map-preview:hover {
+      opacity: 0.92;
+      transition: opacity 0.2s;
+    }
 
     /* ===== RESULTS SECTION ===== */
     .results {
@@ -1107,7 +1115,10 @@
 
     <!-- SIDEBAR FILTERS -->
     <aside class="sidebar">
-      <div class="sidebar-inner">
+      <div class="sidebar-sticky">
+
+        <!-- กล่อง filter สีขาว -->
+        <div class="sidebar-inner">
 
         <!-- หัว Filters -->
         <div class="filter-title">
@@ -1184,15 +1195,14 @@
           <div class="filter-item"><input type="checkbox" id="b3"><label for="b3">King</label></div>
         </div>
 
-        <!-- ปุ่ม View on Map -->
-        <button class="map-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>
-          </svg>
-          View on Map
-        </button>
-
       </div>
+      <!-- รูปแผนที่อยู่นอกกล่อง filter สีขาว เหมือนต้นฉบับ -->
+      <div class="map-preview" onclick="alert('เปิดแผนที่ขนาดเต็ม...')">
+        <img src="12a.jpg" alt="Map of Bali - View on Map"
+             onerror="this.style.minHeight='160px'" />
+      </div>
+
+      </div><!-- end sidebar-sticky -->
     </aside>
 
     <!-- RESULTS PANEL -->
@@ -1553,31 +1563,32 @@
     renderDestList('');
 
     // ========================================
-    // DATE PICKER
+    // DATE PICKER - แก้ใหม่ให้ใช้วันจริงปัจจุบัน
     // ========================================
-    // เริ่มที่ October 2024
-    var dpBaseYear = 2024;
-    var dpBaseMonth = 9; // 0-index = October
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    var dateStart = null;  // วันที่เริ่ม (Date object)
-    var dateEnd   = null;  // วันที่สิ้นสุด
-    var dpSelecting = 'start'; // กำลังเลือก start หรือ end
+    // เริ่มที่เดือนปัจจุบัน
+    var dpBaseYear  = today.getFullYear();
+    var dpBaseMonth = today.getMonth();
+
+    var dateStart = null;
+    var dateEnd   = null;
+    var dpSelecting = 'start';
 
     var MONTHS = ['January','February','March','April','May','June',
                   'July','August','September','October','November','December'];
     var DAYS   = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
     function renderCalendar() {
-      // แสดง 2 เดือนติดกัน
       renderMonth('dp-m1', dpBaseYear, dpBaseMonth, 'dp-m1-title');
 
-      var m2 = dpBaseMonth + 1;
-      var y2 = dpBaseYear;
+      var m2 = dpBaseMonth + 1, y2 = dpBaseYear;
       if (m2 > 11) { m2 = 0; y2++; }
       renderMonth('dp-m2', y2, m2, 'dp-m2-title');
 
       document.getElementById('dp-month-label').textContent =
-        MONTHS[dpBaseMonth] + ' – ' + MONTHS[m2] + ' ' + y2;
+        MONTHS[dpBaseMonth] + ' ' + dpBaseYear + ' – ' + MONTHS[m2] + ' ' + y2;
     }
 
     function renderMonth(gridId, year, month, titleId) {
@@ -1585,7 +1596,6 @@
       var grid = document.getElementById(gridId);
       grid.innerHTML = '';
 
-      // header วัน
       DAYS.forEach(function(d) {
         var lbl = document.createElement('div');
         lbl.className = 'dp-day-label';
@@ -1593,12 +1603,9 @@
         grid.appendChild(lbl);
       });
 
-      var firstDay = new Date(year, month, 1).getDay();
+      var firstDay    = new Date(year, month, 1).getDay();
       var daysInMonth = new Date(year, month + 1, 0).getDate();
-      var today = new Date();
-      today.setHours(0,0,0,0);
 
-      // empty cells ก่อนวันแรก
       for (var i = 0; i < firstDay; i++) {
         var empty = document.createElement('div');
         empty.className = 'dp-day empty';
@@ -1607,25 +1614,28 @@
 
       for (var day = 1; day <= daysInMonth; day++) {
         var date = new Date(year, month, day);
+        date.setHours(0,0,0,0);
         var cell = document.createElement('div');
         cell.className = 'dp-day';
 
-        // วันที่ผ่านมาแล้ว disabled
         if (date < today) {
+          // วันในอดีต — คลิกไม่ได้
           cell.classList.add('disabled');
         } else {
-          // เช็ค selected start/end/in-range
-          if (dateStart && date.getTime() === dateStart.getTime()) {
+          // ไฮไลต์ start
+          if (dateStart && date.getTime() === dateStart.getTime())
             cell.classList.add('selected-start');
-          }
-          if (dateEnd && date.getTime() === dateEnd.getTime()) {
+          // ไฮไลต์ end
+          if (dateEnd && date.getTime() === dateEnd.getTime())
             cell.classList.add('selected-end');
-          }
-          if (dateStart && dateEnd && date > dateStart && date < dateEnd) {
+          // ไฮไลต์ช่วงกลาง
+          if (dateStart && dateEnd && date > dateStart && date < dateEnd)
             cell.classList.add('in-range');
-          }
+          // today label
+          if (date.getTime() === today.getTime())
+            cell.style.fontWeight = '700';
 
-          // คลิกเลือกวัน
+          // closure เพื่อ capture date ถูกต้อง
           (function(d) {
             cell.onclick = function() { pickDate(d); };
           })(new Date(year, month, day));
@@ -1637,21 +1647,23 @@
     }
 
     function pickDate(date) {
+      date.setHours(0,0,0,0);
       if (dpSelecting === 'start' || (dateStart && dateEnd)) {
-        // เริ่มเลือกใหม่
+        // click 1 — เลือก check-in
         dateStart = date;
-        dateEnd = null;
+        dateEnd   = null;
         dpSelecting = 'end';
       } else {
-        // เลือก end
-        if (date < dateStart) {
-          // ถ้าเลือกวันก่อน start ให้สลับ
-          dateEnd = dateStart;
+        // click 2 — เลือก check-out
+        if (date <= dateStart) {
+          // คลิกวันเดิมหรือก่อน start → รีเซ็ต
           dateStart = date;
+          dateEnd   = null;
+          dpSelecting = 'end';
         } else {
           dateEnd = date;
+          dpSelecting = 'start';
         }
-        dpSelecting = 'start';
       }
       updateDateText();
       renderCalendar();
@@ -1662,10 +1674,12 @@
       if (!dateStart) {
         el.innerHTML = 'Select check-in date';
       } else if (!dateEnd) {
-        el.innerHTML = '<strong>' + formatDate(dateStart) + '</strong> → Select check-out';
+        el.innerHTML = '✈ <strong>' + formatDate(dateStart) + '</strong> &rarr; Select check-out';
       } else {
         var nights = Math.round((dateEnd - dateStart) / 86400000);
-        el.innerHTML = '<strong>' + formatDate(dateStart) + '</strong> – <strong>' + formatDate(dateEnd) + '</strong> (' + nights + ' nights)';
+        el.innerHTML = '<strong>' + formatDate(dateStart) + '</strong> – <strong>' +
+          formatDate(dateEnd) + '</strong> &nbsp;·&nbsp; <span style="color:#1a6ed8;">' +
+          nights + ' night' + (nights > 1 ? 's' : '') + '</span>';
       }
     }
 
@@ -1678,16 +1692,26 @@
     }
 
     function changeMonth(dir) {
-      dpBaseMonth += dir;
-      if (dpBaseMonth > 11) { dpBaseMonth = 0; dpBaseYear++; }
-      if (dpBaseMonth < 0)  { dpBaseMonth = 11; dpBaseYear--; }
+      // ป้องกันย้อนกลับไปเดือนในอดีต
+      var newMonth = dpBaseMonth + dir;
+      var newYear  = dpBaseYear;
+      if (newMonth > 11) { newMonth = 0; newYear++; }
+      if (newMonth < 0)  { newMonth = 11; newYear--; }
+      // ห้ามไปก่อนเดือนปัจจุบัน
+      var minDate = new Date(today.getFullYear(), today.getMonth(), 1);
+      var target  = new Date(newYear, newMonth, 1);
+      if (target < minDate) return;
+      dpBaseMonth = newMonth;
+      dpBaseYear  = newYear;
       renderCalendar();
     }
 
     function confirmDates() {
       if (dateStart && dateEnd) {
+        var nights = Math.round((dateEnd - dateStart) / 86400000);
         document.getElementById('dateLabel').textContent =
-          formatDateShort(dateStart) + ' – ' + formatDateShort(dateEnd) + ', ' + dateEnd.getFullYear();
+          formatDateShort(dateStart) + ' – ' + formatDateShort(dateEnd) +
+          ', ' + dateEnd.getFullYear();
       } else if (dateStart) {
         document.getElementById('dateLabel').textContent =
           formatDateShort(dateStart) + ' – Select checkout';
@@ -1695,13 +1719,9 @@
       closeAllPopups();
     }
 
-    // init ปฏิทิน
+    // init ปฏิทิน — ไม่ set default เพราะ Oct 2024 ผ่านมาแล้ว ให้ user เลือกเอง
     renderCalendar();
-    // set default dates Oct 12-19 2024
-    dateStart = new Date(2024, 9, 12);
-    dateEnd   = new Date(2024, 9, 19);
     updateDateText();
-    renderCalendar();
 
     // ========================================
     // TRAVELERS COUNTER
