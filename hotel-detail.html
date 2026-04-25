@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T-Goda - Grand Azure Resort & Spa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background: #fff;
+    }
+
+    /* NAVBAR เหมือนเดิม */
+    .navbar {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 40px; height: 60px;
+      background: #fff; border-bottom: 1px solid #eee;
+      position: sticky; top: 0; z-index: 100;
+    }
+
+    .navbar .logo { font-size: 22px; font-weight: 800; color: #1a6ed8; text-decoration: none; }
+
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: #555; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+    .nav-links a.active { color: #1a6ed8; border-bottom: 2px solid #1a6ed8; padding-bottom: 2px; }
+    .nav-links a:hover { color: #1a6ed8; }
+
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+
+    .btn-signin { background: none; border: none; color: #333; font-size: 14px; font-weight: 500; cursor: pointer; font-family: 'Poppins', sans-serif; }
+    .btn-signin:hover { color: #1a6ed8; }
+
+    .btn-create { background: #1a6ed8; color: #fff; border: none; padding: 9px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+    .btn-create:hover { background: #1558b0; }
+
+    /* ===== BREADCRUMB ===== */
+    /* Home > Greece > Crete Hotels > Grand Azure Resort */
+    .breadcrumb {
+      padding: 14px 60px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .breadcrumb a { color: #888; text-decoration: none; transition: color 0.2s; }
+    .breadcrumb a:hover { color: #1a6ed8; }
+    .breadcrumb .sep { margin: 0 6px; color: #ccc; }
+    .breadcrumb .current { color: #333; font-weight: 500; }
+
+    /* ===== HOTEL HEADER ===== */
+    /* ชื่อโรงแรม rating badge ปุ่ม share save book */
+    .hotel-header {
+      padding: 0 60px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .hotel-header-left { flex: 1; }
+
+    /* ดาวและ badge RESORT */
+    .hotel-stars-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .hotel-stars { color: #f5a623; font-size: 18px; }
+
+    .badge-resort {
+      background: #e8f0fb;
+      color: #1a6ed8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid #b5d0f0;
+    }
+
+    .hotel-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .hotel-location {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .hotel-location a {
+      color: #1a6ed8;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    /* ปุ่มด้านขวา Share Save Book Now */
+    .hotel-header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      padding-top: 8px;
+    }
+
+    .btn-share, .btn-save {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 1.5px solid #ddd;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      transition: border-color 0.2s;
+    }
+
+    .btn-share:hover, .btn-save:hover { border-color: #1a6ed8; color: #1a6ed8; }
+
+    /* ปุ่ม Book Now ใหญ่สีแดง */
+    .btn-book-main {
+      background: #c0273a; color: #fff; border: none;
+      padding: 10px 26px; border-radius: 6px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: 'Poppins', sans-serif; transition: background 0.2s;
+    }
+
+    .btn-book-main:hover { background: #a01e2e; }
+
+    /* ===== PHOTO GALLERY ===== */
+    /* รูปใหญ่ซ้าย + รูปเล็กขวา grid 2x2 */
+    .gallery {
+      padding: 0 60px 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px;
+      gap: 6px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* รูปใหญ่ซ้ายกินพื้นที่ 2 แถว */
+    .gallery-main {
+      grid-row: 1 / 3;
+      border-radius: 12px 0 0 12px;
+      overflow: hidden;
+    }
+
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #c5d8f0;
+      transition: transform 0.4s;
+    }
+
+    .gallery-main:hover img { transform: scale(1.03); }
+
+    /* 4 รูปเล็กด้านขวา */
+    .gallery-grid-right {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px;
+      gap: 6px;
+    }
+
+    .gallery-thumb {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #c5d8f0;
+      transition: transform 0.3s;
+    }
+
+    .gallery-thumb:hover img { transform: scale(1.05); }
+
+    /* รูปสุดท้ายมี overlay "+124 photos" */
+    .gallery-thumb.last {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-thumb.last .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* ===== MAIN DETAIL CONTENT ===== */
+    /* Overview ซ้าย + Score box ขวา */
+    .detail-content {
+      padding: 0 60px 30px;
+      display: flex;
+      gap: 30px;
+    }
+
+    .detail-main { flex: 1; }
+    .detail-sidebar { width: 280px; flex-shrink: 0; }
+
+    /* Overview section */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 12px;
+    }
+
+    .overview-text {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    /* Popular Amenities */
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .amenity-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .amenity-icon {
+      width: 32px;
+      height: 32px;
+      background: #f0f5ff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .see-all {
+      color: #1a6ed8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      padding: 0;
+    }
+
+    /* ===== SCORE BOX ===== */
+    /* กล่องคะแนน 9.2 ด้านขวาบน */
+    .score-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .score-label-main {
+      font-size: 18px;
+      font-weight: 800;
+      color: #111;
+    }
+
+    .score-reviews-small {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .score-big {
+      background: #1a6ed8;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 800;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+
+    /* progress bar คะแนนย่อย */
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .score-row span:first-child {
+      width: 90px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .score-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: #eee;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      background: #1a6ed8;
+      border-radius: 3px;
+    }
+
+    .score-row span:last-child {
+      width: 28px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      text-align: right;
+    }
+
+    /* แผนที่ขนาดเล็ก */
+    .mini-map {
+      background: #e8f0e8;
+      border-radius: 10px;
+      height: 120px;
+      overflow: hidden;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .mini-map img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #c8d8c8;
+    }
+
+    .map-info { font-size: 12px; color: #555; }
+    .map-info strong { display: block; font-weight: 600; color: #333; }
+
+    /* ===== ROOM SELECTION TABLE ===== */
+    .rooms-section {
+      padding: 0 60px 30px;
+    }
+
+    .rooms-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .rooms-table thead th {
+      background: #f8f8f8;
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+
+    .rooms-table tbody tr {
+      border-bottom: 1px solid #f5f5f5;
+      transition: background 0.2s;
+    }
+
+    .rooms-table tbody tr:hover { background: #fafafa; }
+    .rooms-table tbody tr:last-child { border-bottom: none; }
+
+    .rooms-table td {
+      padding: 16px;
+      font-size: 13px;
+      color: #333;
+      vertical-align: middle;
+    }
+
+    .room-name {
+      font-weight: 700;
+      color: #111;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .room-details {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* badge LIMITED TIME OFFER */
+    .badge-limited {
+      display: inline-block;
+      background: #c0273a;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ลิงค์ room details สีน้ำเงิน */
+    .room-link {
+      color: #1a6ed8;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* ไอคอนคนในช่อง Sleeps */
+    .sleeps-icon { color: #888; font-size: 16px; letter-spacing: 2px; }
+
+    /* ราคาในตาราง */
+    .price-col .old-p { font-size: 12px; color: #bbb; text-decoration: line-through; }
+    .price-col .new-p { font-size: 20px; font-weight: 800; color: #111; }
+    .price-col .incl { font-size: 11px; color: #888; }
+
+    /* options column */
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #3a8a3a;
+      margin-bottom: 4px;
+    }
+
+    .option-item.red { color: #c0273a; font-weight: 700; }
+    .option-item.green { color: #3a8a3a; }
+    .option-item.blue { color: #1a6ed8; }
+
+    /* ปุ่ม Select */
+    .btn-select {
+      background: #1a6ed8; color: #fff; border: none;
+      padding: 10px 20px; border-radius: 6px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: 'Poppins', sans-serif; transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-select:hover { background: #1558b0; }
+
+    /* ===== GUEST REVIEWS ===== */
+    .reviews-section {
+      padding: 0 60px 40px;
+    }
+
+    .reviews-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .reviews-header a {
+      color: #1a6ed8;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* 3 review card แสดงแบบ grid */
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .review-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 16px;
+      transition: box-shadow 0.2s;
+    }
+
+    .review-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+    .review-stars { color: #f5a623; font-size: 13px; margin-bottom: 4px; }
+    .review-date { font-size: 11px; color: #bbb; float: right; }
+
+    .review-text {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+
+    .reviewer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* avatar วงกลม initials */
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .avatar.sm { background: #fce8e8; color: #c0273a; }
+    .avatar.jw { background: #e8f0fb; color: #1a6ed8; }
+    .avatar.ak { background: #e8f5e8; color: #3a8a3a; }
+
+    .reviewer-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .reviewer-country {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    /* FOOTER */
+    .footer { background: #f0f0f0; padding: 40px 60px 20px; margin-top: 10px; }
+
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 30px; }
+
+    .footer-brand .logo { font-size: 20px; font-weight: 800; color: #1a6ed8; display: block; margin-bottom: 10px; text-decoration: none; }
+    .footer-brand p { font-size: 13px; color: #777; line-height: 1.6; }
+
+    .footer-col h4 { font-size: 14px; font-weight: 700; color: #222; margin-bottom: 14px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a { text-decoration: none; color: #777; font-size: 13px; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: #1a6ed8; }
+
+    .footer-bottom { border-top: 1px solid #ddd; padding-top: 18px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 12px; color: #aaa; }
+
+    .social-icons { display: flex; gap: 14px; }
+    .social-icon { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: #777; text-decoration: none; }
+    .social-icon:hover { border-color: #1a6ed8; color: #1a6ed8; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">T-Goda</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Hotels</a></li>
+      <li><a href="#">Flights</a></li>
+      <li><a href="#">Bundles</a></li>
+      <li><a href="#">Activities</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="btn-signin">Sign In</button>
+      <button class="btn-create">Create Account</button>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="sep">›</span>
+    <a href="#">Greece</a>
+    <span class="sep">›</span>
+    <a href="#">Crete Hotels</a>
+    <span class="sep">›</span>
+    <span class="current">Grand Azure Resort &amp; Spa</span>
+  </div>
+
+  <!-- HOTEL HEADER -->
+  <div class="hotel-header">
+    <div class="hotel-header-left">
+      <div class="hotel-stars-row">
+        <span class="hotel-stars">★★★★★</span>
+        <span class="badge-resort">RESORT</span>
+      </div>
+      <h1>Grand Azure Resort &amp; Spa, Elounda</h1>
+      <div class="hotel-location">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+        Elounda Bay, Crete, 72053, Greece
+        <a href="#">Show on map</a>
+      </div>
+    </div>
+    <div class="hotel-header-right">
+      <button class="btn-share">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
+      <button class="btn-save" id="saveBtn" onclick="toggleSave()">
+        <svg id="heartIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Save
+      </button>
+      <button class="btn-book-main" onclick="scrollToRooms()">Book Now</button>
+    </div>
+  </div>
+
+  <!-- PHOTO GALLERY -->
+  <div class="gallery">
+    <!-- รูปใหญ่ด้านซ้าย -->
+    <div class="gallery-main">
+      <img src="13.jpg" alt="Grand Azure Resort Pool" />
+    </div>
+    <!-- 4 รูปเล็กด้านขวา ใช้ grid แยก -->
+    <div class="gallery-grid-right">
+      <div class="gallery-thumb">
+        <img src="14.jpg" alt="Sunset view" />
+      </div>
+      <div class="gallery-thumb">
+        <img src="15.jpg" alt="Pool area" />
+      </div>
+      <div class="gallery-thumb">
+        <img src="16.jpg" alt="Outdoor seating" />
+      </div>
+      <!-- รูปสุดท้ายมี overlay +124 photos -->
+      <div class="gallery-thumb last" onclick="alert('จะโหลด gallery เพิ่มเติม...')">
+        <img src="17.jpg" alt="Interior" />
+        <div class="overlay">+124 photos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN DETAIL CONTENT -->
+  <div class="detail-content">
+
+    <!-- LEFT: Overview + Amenities -->
+    <div class="detail-main">
+
+      <p class="section-title">Overview</p>
+      <p class="overview-text">
+        Experience unparalleled luxury at the Grand Azure Resort &amp; Spa, nestled on the pristine shores of Elounda Bay.
+        This architectural masterpiece blends traditional Cretan charm with ultra-modern design, offering guests breathtaking
+        panoramic views of the Mediterranean. Whether you're seeking a romantic getaway or a rejuvenation retreat, our
+        world-class amenities and personalized service ensure a stay that transcends the ordinary.
+      </p>
+
+      <p class="section-title">Popular Amenities</p>
+      <div class="amenities-grid">
+        <div class="amenity-item">
+          <div class="amenity-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a6ed8" stroke-width="2"><path d="M3 9l1-4h16l1 4M3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9M3 9h18"/></svg>
+          </div>
+          3 Outdoor Pools
+        </div>
+        <div class="amenity-item">
+          <div class="amenity-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a6ed8" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          Full-service Spa
+        </div>
+        <div class="amenity-item">
+          <div class="amenity-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a6ed8" stroke-width="2"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+          </div>
+          5 Restaurants
+        </div>
+        <div class="amenity-item">
+          <div class="amenity-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a6ed8" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          </div>
+          Gym &amp; Fitness
+        </div>
+        <div class="amenity-item">
+          <div class="amenity-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a6ed8" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+          </div>
+          Free High-speed Wi-Fi
+        </div>
+        <div class="amenity-item">
+          <div class="amenity-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1a6ed8" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          </div>
+          Private Beach
+        </div>
+      </div>
+      <button class="see-all">See all 45 amenities ˅</button>
+
+    </div>
+
+    <!-- RIGHT: Score + Map -->
+    <div class="detail-sidebar">
+
+      <!-- Score card -->
+      <div class="score-card">
+        <div class="score-header">
+          <div>
+            <div class="score-label-main">Excellent</div>
+            <div class="score-reviews-small">1,248 verified reviews</div>
+          </div>
+          <div class="score-big">9.2</div>
+        </div>
+
+        <!-- Cleanliness 9.5 -->
+        <div class="score-row">
+          <span>Cleanliness</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:95%"></div></div>
+          <span>9.5</span>
+        </div>
+        <!-- Service 9.2 -->
+        <div class="score-row">
+          <span>Service</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:92%"></div></div>
+          <span>9.2</span>
+        </div>
+        <!-- Location 8.9 -->
+        <div class="score-row">
+          <span>Location</span>
+          <div class="score-bar-bg"><div class="score-bar-fill" style="width:89%"></div></div>
+          <span>8.9</span>
+        </div>
+      </div>
+
+      <!-- Mini Map -->
+      <div class="mini-map">
+        <img src="18.jpg" alt="Map of Elounda Bay Crete" />
+      </div>
+      <div class="map-info">
+        <strong>Near Spinalonga Island</strong>
+        15 min walk to city center
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ROOM SELECTION -->
+  <div class="rooms-section" id="roomSection">
+    <p class="section-title" style="padding: 0 0 16px;">Select Your Room</p>
+
+    <table class="rooms-table">
+      <thead>
+        <tr>
+          <th>Room Type</th>
+          <th>Sleeps</th>
+          <th>Today's Price</th>
+          <th>Options</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Room 1: Presidential Sea Front Suite -->
+        <tr>
+          <td>
+            <div class="room-name">
+              Presidential Sea Front Suite
+              <span class="badge-limited">LIMITED TIME OFFER</span>
+            </div>
+            <div class="room-details">85m² • Panoramic Sea View • Infinity Pool Access</div>
+            <div class="room-link" onclick="">🔍 Room details</div>
+          </td>
+          <td>
+            <span class="sleeps-icon">👤👤👤👤</span>
+          </td>
+          <td class="price-col">
+            <div class="old-p">$1,295</div>
+            <div class="new-p">$862</div>
+            <div class="incl">Includes taxes &amp; fees</div>
+          </td>
+          <td>
+            <div class="option-item green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Free Airport Transfer
+            </div>
+            <div class="option-item blue">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              All-Inclusive Premium
+            </div>
+            <div class="option-item red">Only 1 room left!</div>
+          </td>
+          <td><button class="btn-select" onclick="selectRoom('Presidential Sea Front Suite', 862)">Select</button></td>
+        </tr>
+
+        <!-- Room 2: Deluxe Garden View Room -->
+        <tr>
+          <td>
+            <div class="room-name">Deluxe Garden View Room</div>
+            <div class="room-details">32m² • Balcony • Garden View • 1 King Bed</div>
+            <div class="room-link">🔍 Room details</div>
+          </td>
+          <td>
+            <span class="sleeps-icon">👤👤</span>
+          </td>
+          <td class="price-col">
+            <div class="old-p">$345</div>
+            <div class="new-p">$264</div>
+            <div class="incl">Includes taxes &amp; fees</div>
+          </td>
+          <td>
+            <div class="option-item green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Free Cancellation
+            </div>
+            <div class="option-item green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Breakfast Included
+            </div>
+          </td>
+          <td><button class="btn-select" onclick="selectRoom('Deluxe Garden View Room', 264)">Select</button></td>
+        </tr>
+
+        <!-- Room 3: Junior Suite with Private Pool -->
+        <tr>
+          <td>
+            <div class="room-name">Junior Suite with Private Pool</div>
+            <div class="room-details">45m² • Private Pool • Sea View • King Bed</div>
+            <div class="room-link">🔍 Room details</div>
+          </td>
+          <td>
+            <span class="sleeps-icon">👤👤🧒</span>
+          </td>
+          <td class="price-col">
+            <div class="old-p">$626</div>
+            <div class="new-p">$445</div>
+            <div class="incl">Includes taxes &amp; fees</div>
+          </td>
+          <td>
+            <div class="option-item green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Free Cancellation
+            </div>
+            <div class="option-item blue">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              All-Inclusive
+            </div>
+            <div class="option-item red">Only 2 rooms left!</div>
+          </td>
+          <td><button class="btn-select" onclick="selectRoom('Junior Suite with Private Pool', 445)">Select</button></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- GUEST REVIEWS -->
+  <div class="reviews-section">
+    <div class="reviews-header">
+      <p class="section-title" style="margin:0">Guest Reviews</p>
+      <a href="#">Read all 1,248 reviews</a>
+    </div>
+
+    <div class="reviews-grid">
+
+      <!-- Review 1: Sophia Martinez -->
+      <div class="review-card">
+        <div>
+          <span class="review-stars">★★★★★</span>
+          <span class="review-date">May 12, 2024</span>
+        </div>
+        <p class="review-text">"An absolute paradise. The views from the Presidential Suite are unmatched. The service was impeccable from start to finish."</p>
+        <div class="reviewer">
+          <div class="avatar sm">SM</div>
+          <div>
+            <div class="reviewer-name">Sophia Martinez</div>
+            <div class="reviewer-country">United Kingdom</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 2: James Wilson -->
+      <div class="review-card">
+        <div>
+          <span class="review-stars">★★★★</span>
+          <span class="review-date">Apr 28, 2024</span>
+        </div>
+        <p class="review-text">"Excellent facilities and great breakfast selection. The private beach is beautiful, though the city center is a bit of a walk."</p>
+        <div class="reviewer">
+          <div class="avatar jw">JW</div>
+          <div>
+            <div class="reviewer-name">James Wilson</div>
+            <div class="reviewer-country">United States</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Review 3: Anna Kowalski -->
+      <div class="review-card">
+        <div>
+          <span class="review-stars">★★★★★</span>
+          <span class="review-date">Apr 15, 2024</span>
+        </div>
+        <p class="review-text">"The spa treatments were heavenly. Truly a five-star experience. We will definitely be coming back next summer."</p>
+        <div class="reviewer">
+          <div class="avatar ak">AK</div>
+          <div>
+            <div class="reviewer-name">Anna Kowalski</div>
+            <div class="reviewer-country">Germany</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">T-Goda</a>
+        <p>Making world travel accessible, affordable, and delightful<br>for everyone since 2024. Your journey starts here.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul><li><a href="#">Support</a></li><li><a href="#">Mobile App</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>©2024 T-Goda Booking. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="#" class="social-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="#" class="social-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+        <a href="#" class="social-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ปุ่ม Save toggle หัวใจ
+    var saved = false;
+    function toggleSave() {
+      saved = !saved;
+      var btn = document.getElementById('saveBtn');
+      var icon = document.getElementById('heartIcon');
+      if (saved) {
+        icon.setAttribute('fill', '#c0273a');
+        icon.setAttribute('stroke', '#c0273a');
+        btn.style.color = '#c0273a';
+        btn.style.borderColor = '#c0273a';
+      } else {
+        icon.setAttribute('fill', 'none');
+        icon.setAttribute('stroke', 'currentColor');
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }
+    }
+
+    // scroll ไปหาห้อง
+    function scrollToRooms() {
+      document.getElementById('roomSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // เลือกห้อง
+    function selectRoom(name, price) {
+      alert('คุณเลือก: ' + name + '\nราคา: $' + price + ' / คืน\n\nดำเนินการจอง...');
+    }
+
+    // animation ตอน scroll
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.review-card, .score-card').forEach(function(el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      obs.observe(el);
+    });
+  </script>
+
+</body>
+</html>

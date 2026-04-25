@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T-Goda - Hotels, Flights, Bundles & Activities</title>
+  <!-- โหลด Google Fonts เพราะเราอยากให้มันสวยๆ -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* รีเซ็ตทุกอย่างก่อนเลย เพื่อกันบั๊กพวก margin padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ตั้งค่าฟอนต์หลักของทั้งหน้า */
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background: #fff;
+    }
+
+    /* ===== NAVBAR ===== */
+    /* บาร์ด้านบนสุด สีขาว มี shadow นิดนึง */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 60px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* โลโก้ T-Goda สีน้ำเงิน ตัวหนา */
+    .navbar .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1a6ed8;
+      text-decoration: none;
+    }
+
+    /* เมนู Hotels Flights Bundles Activities */
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #555;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    /* Hotels เป็นเมนูที่ active อยู่ สีน้ำเงินและมีเส้นใต้ */
+    .nav-links a.active {
+      color: #1a6ed8;
+      border-bottom: 2px solid #1a6ed8;
+      padding-bottom: 2px;
+    }
+
+    .nav-links a:hover {
+      color: #1a6ed8;
+    }
+
+    /* ปุ่ม Sign In และ Create Account ด้านขวา */
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-signin {
+      background: none;
+      border: none;
+      color: #333;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-signin:hover {
+      color: #1a6ed8;
+    }
+
+    /* ปุ่ม Create Account สีน้ำเงิน มนๆ */
+    .btn-create {
+      background: #1a6ed8;
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .btn-create:hover {
+      background: #1558b0;
+    }
+
+    /* ===== HERO SECTION ===== */
+    /* ส่วนรูปใหญ่ด้านบน มีพระอาทิตย์ ทะเล ต้นมะพร้าว */
+    .hero {
+      position: relative;
+      height: 380px;
+      background: url('01.jpg') center center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* ทำให้รูปมืดลงนิดนึงเพื่อให้อ่านข้อความได้ง่ายขึ้น */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 30, 80, 0.35);
+    }
+
+    /* เนื้อหาใน hero อยู่เหนือ overlay */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-content h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .hero-content p {
+      color: #e8e8e8;
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    /* กล่อง search bar ใน hero */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      max-width: 580px;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    /* input ค้นหาสถานที่ */
+    .search-bar input[type="text"] {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      color: #999;
+    }
+
+    /* ไอคอน location ใน search */
+    .search-bar .icon-location {
+      padding: 0 0 0 14px;
+      color: #aaa;
+      font-size: 16px;
+    }
+
+    /* ช่องวันที่ */
+    .search-bar .date-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      border-left: 1px solid #eee;
+      font-size: 14px;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    /* ปุ่ม Search สีน้ำเงิน */
+    .search-bar .btn-search {
+      background: #1a6ed8;
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .search-bar .btn-search:hover {
+      background: #1558b0;
+    }
+
+    /* ===== FEATURES SECTION ===== */
+    /* 3 กล่องใต้ hero: Best Price, 24/7 Support, Flexible Booking */
+    .features {
+      display: flex;
+      gap: 24px;
+      padding: 40px 60px;
+      background: #fff;
+    }
+
+    .feature-card {
+      flex: 1;
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 24px 28px;
+      text-align: center;
+    }
+
+    /* ไอคอนแต่ละอัน วาดด้วย CSS */
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    /* ===== TRENDING DESTINATIONS ===== */
+    /* ส่วน Trending Destinations มี 4 รูปเมือง */
+    .section-destinations {
+      padding: 10px 60px 50px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .section-header p {
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* ลิงค์ View all สีน้ำเงิน */
+    .section-header a {
+      color: #1a6ed8;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .section-header a:hover {
+      text-decoration: underline;
+    }
+
+    /* 4 การ์ดเมืองยอดนิยม */
+    .destinations-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .dest-card {
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .dest-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    /* รูปภาพในการ์ดเมือง */
+    .dest-card .dest-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      position: relative;
+    }
+
+    .dest-card .dest-img-wrap {
+      position: relative;
+    }
+
+    /* badge "TOP RATED" มุมซ้ายล่างของรูป */
+    .badge-top {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .dest-card .dest-info {
+      padding: 12px 4px 4px;
+    }
+
+    .dest-card .dest-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    /* ราคาเริ่มต้น "Starting from $120" */
+    .dest-card .dest-info p {
+      font-size: 12px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .dest-card .dest-info p span {
+      color: #e03a3a;
+      font-weight: 700;
+    }
+
+    /* ===== SUMMER SALE BANNER ===== */
+    /* แบนเนอร์สีแดง Summer Sales 40% Off */
+    .sale-banner {
+      margin: 0 60px 50px;
+      background: #c0273a;
+      border-radius: 16px;
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ลวดลายวงกลมใน banner */
+    .sale-banner::before {
+      content: '';
+      position: absolute;
+      right: 300px;
+      top: -40px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .sale-banner::after {
+      content: '';
+      position: absolute;
+      right: 240px;
+      bottom: -60px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .sale-text h2 {
+      font-size: 36px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .sale-text p {
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+      max-width: 360px;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ปุ่มในแบนเนอร์ขาว และขอบขาว */
+    .sale-btns {
+      display: flex;
+      gap: 14px;
+    }
+
+    .btn-explore {
+      background: #fff;
+      color: #c0273a;
+      border: none;
+      padding: 11px 22px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: opacity 0.2s;
+    }
+
+    .btn-explore:hover {
+      opacity: 0.9;
+    }
+
+    .btn-join {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 11px 22px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      transition: background 0.2s;
+    }
+
+    .btn-join:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* รูปสระน้ำใน banner ด้านขวา */
+    .sale-img {
+      width: 220px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    /* ===== NEWSLETTER SECTION ===== */
+    /* ส่วนกรอก email รับดีลท่องเที่ยว */
+    .newsletter {
+      background: #f5f5f5;
+      padding: 50px 60px;
+      text-align: center;
+    }
+
+    /* ไอคอน email */
+    .newsletter .email-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+    }
+
+    .newsletter h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 10px;
+    }
+
+    .newsletter p {
+      color: #777;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    /* กล่อง input + ปุ่ม Subscribe */
+    .newsletter-form {
+      display: flex;
+      max-width: 480px;
+      margin: 0 auto 10px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-family: 'Poppins', sans-serif;
+      color: #555;
+      background: #fff;
+    }
+
+    .newsletter-form input::placeholder {
+      color: #bbb;
+    }
+
+    .btn-subscribe {
+      background: #1a6ed8;
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .btn-subscribe:hover {
+      background: #1558b0;
+    }
+
+    .newsletter .terms-text {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .newsletter .terms-text a {
+      color: #1a6ed8;
+      text-decoration: none;
+    }
+
+    /* ===== FOOTER ===== */
+    /* ส่วนล่างสุด มีลิงค์ต่างๆ */
+    .footer {
+      background: #f0f0f0;
+      padding: 40px 60px 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand .logo {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1a6ed8;
+      display: block;
+      margin-bottom: 10px;
+      text-decoration: none;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      color: #777;
+      line-height: 1.6;
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 14px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: #777;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #1a6ed8;
+    }
+
+    /* เส้นขีดคั่น footer */
+    .footer-bottom {
+      border-top: 1px solid #ddd;
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-bottom p {
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* ไอคอน social Facebook Instagram Twitter */
+    .social-icons {
+      display: flex;
+      gap: 14px;
+    }
+
+    .social-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      color: #777;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .social-icon:hover {
+      border-color: #1a6ed8;
+      color: #1a6ed8;
+    }
+
+    /* animation hover ที่การ์ด feature */
+    .feature-card {
+      transition: transform 0.2s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+    }
+
+    /* ===== ทำให้รูปมีผลตอน load ===== */
+    /* ไม่มีรูปจะใช้ gradient แทนก่อน */
+    .hero {
+      background: linear-gradient(135deg, #1a3a6e 0%, #2968c8 50%, #1a8fa0 100%);
+    }
+
+    img.dest-img-el {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* fallback ถ้ารูปโหลดไม่ขึ้น */
+    .dest-img-wrap {
+      background: #dde8f5;
+      min-height: 180px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <!-- แถบเมนูด้านบนเลย -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">T-Goda</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Hotels</a></li>
+      <li><a href="#">Flights</a></li>
+      <li><a href="#">Bundles</a></li>
+      <li><a href="#">Activities</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="btn-signin">Sign In</button>
+      <button class="btn-create">Create Account</button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO SECTION ========== -->
+  <!-- รูปใหญ่สวยๆ พร้อม search bar -->
+  <section class="hero" id="hero-section">
+    <div class="hero-content">
+      <h1>Escape to Your Perfect<br>Paradise</h1>
+      <p>Unlock exclusive prices on over 2 million properties and flights across<br>the globe.</p>
+      <!-- search bar อยู่ตรงกลาง -->
+      <div class="search-bar">
+        <!-- ไอคอน location วาดด้วย inline SVG -->
+        <span class="icon-location">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2">
+            <circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          </svg>
+        </span>
+        <input type="text" placeholder="Where to next?" />
+        <!-- ช่องวันที่ -->
+        <div class="date-field">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Oct 12 - Oct 18
+        </div>
+        <!-- ปุ่ม search -->
+        <button class="btn-search" onclick="doSearch()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          Search
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURES SECTION ========== -->
+  <!-- 3 กล่องฟีเจอร์เด่นๆ -->
+  <section class="features">
+
+    <!-- กล่องที่ 1: Best Price Guarantee -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <!-- ไอคอน tag/price วาดเอง -->
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="20" fill="#fff5e6"/>
+          <path d="M13 13h6l9 9-7 7-9-9V13z" stroke="#e8851a" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+          <circle cx="17" cy="17" r="1.2" fill="#e8851a"/>
+        </svg>
+      </div>
+      <h3>Best Price Guarantee</h3>
+      <p>Find a lower price? We'll match it and give you a voucher for your next trip.</p>
+    </div>
+
+    <!-- กล่องที่ 2: 24/7 Global Support -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="20" fill="#fce8e8"/>
+          <circle cx="20" cy="19" r="7" stroke="#d44" stroke-width="1.8" fill="none"/>
+          <path d="M16 19c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4" stroke="#d44" stroke-width="1.8" fill="none"/>
+          <path d="M14 23c-.8-.5-1.5-1.2-1.5-2 0-1 .7-1.8 1.5-2" stroke="#d44" stroke-width="1.5"/>
+          <path d="M26 23c.8-.5 1.5-1.2 1.5-2 0-1-.7-1.8-1.5-2" stroke="#d44" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h3>24/7 Global Support</h3>
+      <p>Our world-class support team is here to help you anywhere, anytime in 40+ languages.</p>
+    </div>
+
+    <!-- กล่องที่ 3: Flexible Booking -->
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="20" fill="#e8f4e8"/>
+          <rect x="13" y="11" width="14" height="18" rx="2" stroke="#3a8a3a" stroke-width="1.8" fill="none"/>
+          <line x1="16" y1="8" x2="16" y2="14" stroke="#3a8a3a" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="24" y1="8" x2="24" y2="14" stroke="#3a8a3a" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="13" y1="17" x2="27" y2="17" stroke="#3a8a3a" stroke-width="1.5"/>
+          <path d="M16 21l2.5 2.5 5-5" stroke="#3a8a3a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Flexible Booking</h3>
+      <p>Life happens. Most of our properties offer free cancellation for peace of mind.</p>
+    </div>
+
+  </section>
+
+  <!-- ========== TRENDING DESTINATIONS ========== -->
+  <!-- ส่วน 4 เมืองฮิต Bangkok Tokyo Paris London -->
+  <section class="section-destinations">
+    <div class="section-header">
+      <div>
+        <h2>Trending Destinations</h2>
+        <p>Handpicked favorites for your next adventure</p>
+      </div>
+      <a href="#">View all</a>
+    </div>
+
+    <div class="destinations-grid">
+
+      <!-- Bangkok Thailand -->
+      <div class="dest-card" onclick="goToSearch('Bangkok')">
+        <div class="dest-img-wrap">
+          <img src="02.jpg" alt="Bangkok Thailand" class="dest-img-el" onerror="this.style.background='#c5d8f0';this.style.height='180px'" />
+          <span class="badge-top">TOP RATED</span>
+        </div>
+        <div class="dest-info">
+          <h4>Bangkok, Thailand</h4>
+          <p>Starting from <span>$120</span></p>
+        </div>
+      </div>
+
+      <!-- Tokyo Japan -->
+      <div class="dest-card" onclick="goToSearch('Tokyo')">
+        <div class="dest-img-wrap">
+          <img src="03.jpg" alt="Tokyo Japan" class="dest-img-el" onerror="this.style.background='#c5d8f0'" />
+        </div>
+        <div class="dest-info">
+          <h4>Tokyo, Japan</h4>
+          <p>Starting from <span>$250</span></p>
+        </div>
+      </div>
+
+      <!-- Paris France -->
+      <div class="dest-card" onclick="goToSearch('Paris')">
+        <div class="dest-img-wrap">
+          <img src="04.jpg" alt="Paris France" class="dest-img-el" onerror="this.style.background='#c5d8f0'" />
+        </div>
+        <div class="dest-info">
+          <h4>Paris, France</h4>
+          <p>Starting from <span>$180</span></p>
+        </div>
+      </div>
+
+      <!-- London UK -->
+      <div class="dest-card" onclick="goToSearch('London')">
+        <div class="dest-img-wrap">
+          <img src="05.jpg" alt="London UK" class="dest-img-el" onerror="this.style.background='#c5d8f0'" />
+        </div>
+        <div class="dest-info">
+          <h4>London, UK</h4>
+          <p>Starting from <span>$210</span></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== SUMMER SALE BANNER ========== -->
+  <!-- แบนเนอร์สีแดงโปรโมชั่น Summer -->
+  <div class="sale-banner" onclick="">
+    <div class="sale-text">
+      <h2>Summer Sales: Up to<br>40% Off!</h2>
+      <p>Exclusive member deals on flights and luxury hotels for your next summer getaway. Valid until Oct 31st.</p>
+      <div class="sale-btns">
+        <button class="btn-explore" onclick="window.location.href='hotels.html'">Explore Deals</button>
+        <button class="btn-join">Join Club T-Goda</button>
+      </div>
+    </div>
+    <!-- รูปสระน้ำมุมขวา -->
+    <img src="06.jpg" alt="Summer Pool" class="sale-img" />
+  </div>
+
+  <!-- ========== NEWSLETTER ========== -->
+  <!-- ส่วนกรอก email -->
+  <section class="newsletter">
+    <!-- ไอคอน email แบบ SVG -->
+    <div class="email-icon">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <rect width="48" height="48" rx="24" fill="#e8f0fb"/>
+        <rect x="10" y="15" width="28" height="20" rx="3" stroke="#1a6ed8" stroke-width="2" fill="none"/>
+        <path d="M10 18l14 9 14-9" stroke="#1a6ed8" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h2>Get Travel Deals Directly</h2>
+    <p>Subscribe to our newsletter and get early access to hidden gems and seasonal<br>discounts. No spam, only adventure.</p>
+    <!-- form กรอก email -->
+    <div class="newsletter-form">
+      <input type="email" id="emailInput" placeholder="Your email address" />
+      <button class="btn-subscribe" onclick="subscribeNewsletter()">Subscribe Now</button>
+    </div>
+    <p class="terms-text">By subscribing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <!-- ส่วนล่างสุดของหน้า -->
+  <footer class="footer">
+    <div class="footer-grid">
+
+      <!-- คอลัมน์ซ้าย T-Goda -->
+      <div class="footer-brand">
+        <a href="index.html" class="logo">T-Goda</a>
+        <p>Making world travel accessible, affordable, and delightful<br>for everyone since 2024. Your journey starts here.</p>
+      </div>
+
+      <!-- Company links -->
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+
+      <!-- Support links -->
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Mobile App</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal links -->
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- ส่วนล่างสุด copyright + social -->
+    <div class="footer-bottom">
+      <p>©2024 T-Goda Booking. All rights reserved.</p>
+      <!-- social icons -->
+      <div class="social-icons">
+        <!-- Facebook -->
+        <a href="#" class="social-icon" title="Facebook">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
+        </a>
+        <!-- Instagram -->
+        <a href="#" class="social-icon" title="Instagram">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+          </svg>
+        </a>
+        <!-- Twitter/X -->
+        <a href="#" class="social-icon" title="Twitter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <!-- พวก logic ต่างๆ เขียนด้านล่างนี้ -->
+  <script>
+    // ฟังก์ชั่นตอนกด Search button
+    // จะส่งไปหน้า hotels.html
+    function doSearch() {
+      var dest = document.querySelector('.search-bar input[type="text"]').value;
+      if (dest.trim() !== '') {
+        window.location.href = 'hotels.html?q=' + encodeURIComponent(dest);
+      } else {
+        // ถ้าไม่ได้กรอกก็ไปหน้า hotels เลย
+        window.location.href = 'hotels.html';
+      }
+    }
+
+    // ตอนกดที่การ์ดเมือง
+    function goToSearch(city) {
+      window.location.href = 'hotels.html?q=' + encodeURIComponent(city);
+    }
+
+    // ตอนกด Subscribe newsletter
+    function subscribeNewsletter() {
+      var email = document.getElementById('emailInput').value;
+      if (email.includes('@')) {
+        alert('ขอบคุณครับ! เราจะส่งดีลสุดพิเศษไปที่ ' + email);
+        document.getElementById('emailInput').value = '';
+      } else {
+        alert('กรุณากรอก email ให้ถูกต้องนะครับ');
+      }
+    }
+
+    // กด Enter ใน search bar ก็ค้นหาได้
+    document.querySelector('.search-bar input[type="text"]').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doSearch();
+    });
+
+    // ทำให้รูป hero โหลดเร็วขึ้นด้วย lazy loading
+    // ถ้ารูป 01.jpg มีอยู่ก็โหลดใส่ hero
+    var heroImg = new Image();
+    heroImg.onload = function() {
+      document.getElementById('hero-section').style.backgroundImage = "url('01.jpg')";
+      document.getElementById('hero-section').style.backgroundSize = 'cover';
+      document.getElementById('hero-section').style.backgroundPosition = 'center';
+    };
+    heroImg.src = '01.jpg';
+
+    // animation เล็กๆ ตอน scroll มาถึง section
+    // ใช้ Intersection Observer เพราะมันเท่ดี
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    // apply animation ให้กับ card ต่างๆ
+    document.querySelectorAll('.dest-card, .feature-card').forEach(function(el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
