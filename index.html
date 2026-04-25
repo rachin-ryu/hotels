@@ -296,65 +296,91 @@
       gap: 20px;
     }
 
+    /* การ์ดแต่ละใบ ไม่ overflow hidden แล้ว เพราะรูปมี border-radius ของตัวเอง */
     .dest-card {
-      border-radius: 12px;
-      overflow: hidden;
+      border-radius: 0;
+      overflow: visible;    /* เปิดให้ข้อความล้นออกมาได้ */
       cursor: pointer;
       transition: transform 0.25s, box-shadow 0.25s;
+      background: transparent;
     }
 
     .dest-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     }
 
-    /* รูปภาพในการ์ดเมือง */
-    .dest-card .dest-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-      position: relative;
+    .dest-card:hover .dest-img-wrap {
+      box-shadow: 0 14px 32px rgba(0,0,0,0.18);
     }
 
+    /* กรอบรูป มี border-radius ตามต้นฉบับ */
     .dest-card .dest-img-wrap {
       position: relative;
+      border-radius: 14px;    /* มน ตามต้นฉบับ */
+      overflow: hidden;
+      transition: box-shadow 0.25s;
     }
 
-    /* badge "TOP RATED" มุมซ้ายล่างของรูป */
+    /* รูปภาพ portrait สูงเหมือนต้นฉบับ */
+    img.dest-img-el {
+      width: 100%;
+      height: 340px;          /* สูงแบบ portrait เหมือนต้นฉบับ */
+      object-fit: cover;
+      display: block;
+      object-position: center top;  /* โชว์ส่วนบนของรูปเป็นหลัก */
+    }
+
+    /* badge "TOP RATED" มุมซ้ายล่างของรูป สีขาว */
     .badge-top {
       position: absolute;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.55);
-      color: #fff;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(255,255,255,0.92);
+      color: #222;
       font-size: 10px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.8px;
     }
 
+    /* ข้อความชื่อเมืองและราคาใต้รูป */
     .dest-card .dest-info {
-      padding: 12px 4px 4px;
+      padding: 12px 2px 4px;
     }
 
     .dest-card .dest-info h4 {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
       color: #111;
+      margin-bottom: 2px;
     }
 
     /* ราคาเริ่มต้น "Starting from $120" */
     .dest-card .dest-info p {
-      font-size: 12px;
-      color: #888;
+      font-size: 13px;
+      color: #555;
       margin-top: 2px;
     }
 
+    /* ตัวเลขราคาสีน้ำเงินตามต้นฉบับ */
     .dest-card .dest-info p span {
-      color: #e03a3a;
-      font-weight: 700;
+      color: #1a6ed8;         /* สีน้ำเงินเหมือนต้นฉบับ ไม่ใช่แดง! */
+      font-weight: 600;
+    }
+
+    /* fallback สำหรับ .dest-img (ไม่ได้ใช้แล้ว แต่เก็บไว้กันพัง) */
+    .dest-card .dest-img {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* fallback พื้นหลังสีฟ้าอ่อน ถ้ารูปโหลดไม่ขึ้น */
+    .dest-img-wrap {
+      background: #dde8f5;
+      min-height: 340px;
     }
 
     /* ===== SUMMER SALE BANNER ===== */
@@ -645,23 +671,10 @@
       transform: translateY(-3px);
     }
 
-    /* ===== ทำให้รูปมีผลตอน load ===== */
-    /* ไม่มีรูปจะใช้ gradient แทนก่อน */
+    /* ทำให้รูปมีผลตอน load */
+    /* ถ้าไม่มีรูปจะใช้ gradient แทนก่อน */
     .hero {
       background: linear-gradient(135deg, #1a3a6e 0%, #2968c8 50%, #1a8fa0 100%);
-    }
-
-    img.dest-img-el {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* fallback ถ้ารูปโหลดไม่ขึ้น */
-    .dest-img-wrap {
-      background: #dde8f5;
-      min-height: 180px;
     }
   </style>
 </head>
@@ -783,7 +796,7 @@
       <!-- Bangkok Thailand -->
       <div class="dest-card" onclick="goToSearch('Bangkok')">
         <div class="dest-img-wrap">
-          <img src="02.jpg" alt="Bangkok Thailand" class="dest-img-el" onerror="this.style.background='#c5d8f0';this.style.height='180px'" />
+          <img src="02.jpg" alt="Bangkok Thailand" class="dest-img-el" onerror="this.style.background='#c5d8f0';this.style.height='340px'" />
           <span class="badge-top">TOP RATED</span>
         </div>
         <div class="dest-info">
